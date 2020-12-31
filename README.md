@@ -1,5 +1,5 @@
-# jdk8_samples_learn
-jdk 1.8 案例学习
+# jdk_demos_and_samples_learn
+jdk Demos and Samples 案例学习
 
 
 
