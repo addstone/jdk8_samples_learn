@@ -6,11 +6,12 @@ import ensemble.controls.SearchBox;
 import ensemble.controls.WindowButtons;
 import ensemble.controls.WindowResizeButton;
 import ensemble.pages.SamplePage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Stack;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.TimelineBuilder;
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
@@ -18,6 +19,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -25,29 +27,18 @@ import javafx.scene.DepthTest;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.ToolBar;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import netscape.javascript.JSObject;
 
 /**
+ * Description:  Ensemble Main Application
  * Description:  Ensemble2 主程序
  * Author: LuDaShi
  * Date: 2020-12-31-12:29
@@ -105,18 +96,12 @@ public class Ensemble2 extends Application {
     }
 
     /**
-     * Java Main Method for launching application when not using JavaFX
-     * Launcher, eg from IDE without JavaFX support
+     * Start the application
      *
-     * @param args Command line arguments
+     * @param stage The main application stage
      */
-    public static void main(String[] args) {
-        Application.launch(args);
-    }
-
     @Override
-    public void start(final Stage stage) throws Exception {
-
+    public void start(final Stage stage) {
         ensemble2 = this;
         stage.setTitle("Ensemble2");
         // 设置默认文档位置
@@ -308,7 +293,110 @@ public class Ensemble2 extends Application {
                 }
             }
         });
+        // create left split pane
+        BorderPane leftSplitPane = new BorderPane();
+        leftSplitPane.setTop(pageTreeToolBar);
+        leftSplitPane.setCenter(pageTree);
+        // create page toolbar
+        pageToolBar = new ToolBar();
+        pageToolBar.setId("page-toolbar");
+        pageToolBar.setMinHeight(29);
+        pageToolBar.setMaxSize(Double.MAX_VALUE, Control.USE_PREF_SIZE);
+        if (!isApplet) {
+            Button backButton = new Button();
+            backButton.setGraphic(new ImageView(new Image(Ensemble2.class.getResourceAsStream("images/back.png"))));
+            backButton.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent event) {
+                    back();
+                }
+            });
+            backButton.setMaxHeight(Double.MAX_VALUE);
+            Button forwardButton = new Button();
+            forwardButton.setGraphic(new ImageView(new Image(Ensemble2.class.getResourceAsStream("images/forward.png"))));
+            forwardButton.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent event) {
+                    forward();
+                }
+            });
+            forwardButton.setMaxHeight(Double.MAX_VALUE);
+            Button reloadButton = new Button();
+            reloadButton.setGraphic(new ImageView(new Image(Ensemble2.class.getResourceAsStream("images/reload.png"))));
+            reloadButton.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent event) {
+                    reload();
+                }
+            });
+            reloadButton.setMaxHeight(Double.MAX_VALUE);
+            pageToolBar.getItems().addAll(backButton, forwardButton, reloadButton);
+        }
+        breadcrumbBar = new BreadcrumbBar();
+        pageToolBar.getItems().add(breadcrumbBar);
+        if (!isApplet) {
+            Region spacer3 = new Region();
+            HBox.setHgrow(spacer3, Priority.ALWAYS);
+            Button settingsButton = new Button();
+            settingsButton.setId("SettingsButton");
+            settingsButton.setGraphic(new ImageView(new Image(Ensemble2.class.getResourceAsStream("images/settings.png"))));
+            settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent event) {
+                    showProxyDialog();
+                }
+            });
+            settingsButton.setMaxHeight(Double.MAX_VALUE);
+            pageToolBar.getItems().addAll(spacer3, settingsButton);
+        }
+        // create page area
+        pageArea = new Pane() {
+            @Override
+            protected void layoutChildren() {
+                for (Node child : pageArea.getChildren()) {
+                    child.resizeRelocate(0, 0, pageArea.getWidth(), pageArea.getHeight());
+                }
+            }
+        };
+        pageArea.setId("page-area");
+        // create right split pane
+        BorderPane rightSplitPane = new BorderPane();
+        rightSplitPane.setTop(pageToolBar);
+        rightSplitPane.setCenter(pageArea);
+        // create split pane
+        splitPane = new SplitPane();
+        splitPane.setId("page-splitpane");
+        splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        GridPane.setConstraints(splitPane, 0, 1);
+        splitPane.getItems().addAll(leftSplitPane, rightSplitPane);
+        splitPane.setDividerPosition(0, 0.25);
 
+        this.root.setTop(toolBar);
+        this.root.setCenter(splitPane);
+        // add window resize button so its on top
+        if (!isApplet) {
+            windowResizeButton.setManaged(false);
+            this.root.getChildren().add(windowResizeButton);
+        }
+        // expand first level of the tree
+        for (TreeItem child : pages.getRoot().getChildren()) {
+            if (child == pages.getHighlighted() || child == pages.getNew()) {
+                continue;
+            }
+            child.setExpanded(true);
+            for (TreeItem child2 : (ObservableList<TreeItem<String>>) child.getChildren()) {
+                child2.setExpanded(true);
+            }
+        }
+        // goto initial page
+        if (isApplet) {
+            String hashLoc = getBrowserHashLocation();
+            if (hashLoc != null) {
+                goToPage(hashLoc);
+            } else {
+                // default to all samples
+                goToPage(pages.getSamples());
+            }
+        } else {
+            // default to all samples
+            goToPage(pages.getSamples());
+        }
         // show stage
         stage.setScene(scene);
         stage.show();
@@ -610,5 +698,13 @@ public class Ensemble2 extends Application {
         showModalMessage(proxyDialog);
     }
 
-
+    /**
+     * Java Main Method for launching application when not using JavaFX
+     * Launcher, eg from IDE without JavaFX support
+     *
+     * @param args Command line arguments
+     */
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
 }
