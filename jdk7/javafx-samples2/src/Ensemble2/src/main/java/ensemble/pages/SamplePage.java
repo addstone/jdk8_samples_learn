@@ -143,7 +143,7 @@ public class SamplePage extends Page {
             error.setTextAlignment(TextAlignment.CENTER);
             return error;
         }
-        //  load the code
+        //  加载代码
         loadCode();
         try {
             // create main grid
@@ -154,14 +154,14 @@ public class SamplePage extends Page {
             Label header = new Label(getName());
             header.getStyleClass().add("page-header");
             main.getChildren().add(header);
-            // create sample area
+            // 创建样本区
             final StackPane sampleArea = new StackPane();
             VBox.setVgrow(sampleArea, Priority.SOMETIMES);
             main.getChildren().add(sampleArea);
-            // create sample
+            // 创建样本
             final Sample sample = (Sample) sampleClass.newInstance();
             sampleArea.getChildren().add(sample);
-            // create sample controls
+            // 创建样本控件
             Node sampleControls = sample.getControls();
             if (sampleControls != null) {
                 Label subHeader = new Label("Play with these:");
