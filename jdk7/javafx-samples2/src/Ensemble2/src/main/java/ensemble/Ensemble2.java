@@ -14,6 +14,10 @@ import javafx.animation.TimelineBuilder;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,7 +26,10 @@ import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
@@ -239,6 +246,69 @@ public class Ensemble2 extends Application {
                 }
             });
         }
+        // 创建页面树工具栏
+        ToolBar pageTreeToolBar = new ToolBar() {
+            @Override
+            public void requestLayout() {
+                super.requestLayout();
+                // keep the height of pageToolBar in sync with pageTreeToolBar so they always match
+                if (pageToolBar != null && getHeight() != pageToolBar.prefHeight(-1)) {
+                    pageToolBar.setPrefHeight(getHeight());
+                }
+            }
+        };
+        pageTreeToolBar.setId("page-tree-toolbar");
+        pageTreeToolBar.setMinHeight(29);
+        pageTreeToolBar.setMaxWidth(Double.MAX_VALUE);
+        ToggleGroup pageButtonGroup = new ToggleGroup();
+        final ToggleButton allButton = new ToggleButton("All");
+        allButton.setToggleGroup(pageButtonGroup);
+        allButton.setSelected(true);
+        final ToggleButton samplesButton = new ToggleButton("Samples");
+        samplesButton.setToggleGroup(pageButtonGroup);
+        final ToggleButton docsButton = new ToggleButton("Document");
+        docsButton.setToggleGroup(pageButtonGroup);
+        InvalidationListener treeButtonNotifyListener = new InvalidationListener() {
+            public void invalidated(Observable ov) {
+                if (allButton.isSelected()) {
+                    pageTree.setRoot(pages.getRoot());
+                } else if (samplesButton.isSelected()) {
+                    pageTree.setRoot(pages.getSamples());
+                } else if (docsButton.isSelected()) {
+                    pageTree.setRoot(pages.getDocs());
+                }
+            }
+        };
+        allButton.selectedProperty().addListener(treeButtonNotifyListener);
+        samplesButton.selectedProperty().addListener(treeButtonNotifyListener);
+        docsButton.selectedProperty().addListener(treeButtonNotifyListener);
+        pageTreeToolBar.getItems().addAll(allButton, samplesButton, docsButton);
+        // create page tree
+        pages = new Pages();
+        proxyDialog = new ProxyDialog(stage, pages);
+        proxyDialog.loadSettings();
+        proxyDialog.getDocsInBackground(true, null);
+        pages.parseSamples();
+        pageTree = new TreeView();
+        pageTree.setId("page-tree");
+        pageTree.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        pageTree.setRoot(pages.getRoot());
+        pageTree.setShowRoot(false);
+        pageTree.setEditable(false);
+        pageTree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        pageTree.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue,
+                Object newValue) {
+                if (!changingPage) {
+                    Page selectedPage = (Page) pageTree.getSelectionModel().getSelectedItem();
+                    if (selectedPage != pages.getRoot()) {
+                        goToPage(selectedPage);
+                    }
+                }
+            }
+        });
+
         // show stage
         stage.setScene(scene);
         stage.show();
