@@ -1,0 +1,32 @@
+#editorconfig.org
+root = true
+
+[*]
+# 缩进风格，可选space、tab
+indent_style = space
+# 缩进的空格数
+indent_size = 4
+# 结尾换行符，可选lf、cr、crlf
+end_of_line = lf
+# 设置字符集(编码格式)
+charset = utf-8
+# 删除一行中的前后空格
+trim_trailing_whitespace = true
+# 在文件结尾插入新行
+insert_trailing_newline = true
+insert_final_newline = false
+max_line_length = 120
+tab_width = 4
+ij_continuation_indent_size = 4
+ij_formatter_off_tag = @formatter:off
+ij_formatter_on_tag = @formatter:on
+ij_formatter_tags_enabled = false
+ij_smart_tabs = false
+ij_wrap_on_typing = false
+
+
+[{*.yaml, *.yml}]
+# 缩进的空格数
+indent_size = 4
+ij_yaml_keep_indents_on_empty_lines = false
+ij_yaml_keep_line_breaks = true
