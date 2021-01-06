@@ -51,6 +51,7 @@ public class Ensemble2 extends Application {
 
     static {
         // Enable using system proxy if set
+        // 如果设置，启用使用系统代理
         System.setProperty("java.net.useSystemProxies", "true");
     }
 
@@ -88,6 +89,7 @@ public class Ensemble2 extends Application {
 
     /**
      * Get the singleton instance of Ensemble
+     * 获取Ensemble的单例实例
      *
      * @return The singleton instance
      */
@@ -139,6 +141,7 @@ public class Ensemble2 extends Application {
         layerPane.setDepthTest(DepthTest.DISABLE);
         layerPane.getChildren().add(root);
         // create scene
+        // 创建场景
         boolean is3dSupported = Platform.isSupported(ConditionalFeature.SCENE3D);
         scene = new Scene(layerPane, 1020, 700, is3dSupported);
         if (is3dSupported) {
@@ -202,9 +205,11 @@ public class Ensemble2 extends Application {
         GridPane.setConstraints(toolBar, 0, 0);
         if (!isApplet) {
             // add close min max
+            // 添加关闭最小值最大值
             final WindowButtons windowButtons = new WindowButtons(stage);
             toolBar.getItems().add(windowButtons);
             // add window header double clicking
+            // 添加窗口标题双击
             toolBar.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -214,6 +219,7 @@ public class Ensemble2 extends Application {
                 }
             });
             // add window dragging
+            // 添加窗口拖动
             toolBar.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -237,6 +243,7 @@ public class Ensemble2 extends Application {
             public void requestLayout() {
                 super.requestLayout();
                 // keep the height of pageToolBar in sync with pageTreeToolBar so they always match
+                // 保持pageToolBar的高度与pageTreeToolBar同步，以便它们始终匹配
                 if (pageToolBar != null && getHeight() != pageToolBar.prefHeight(-1)) {
                     pageToolBar.setPrefHeight(getHeight());
                 }
@@ -269,6 +276,7 @@ public class Ensemble2 extends Application {
         docsButton.selectedProperty().addListener(treeButtonNotifyListener);
         pageTreeToolBar.getItems().addAll(allButton, samplesButton, docsButton);
         // create page tree
+        // 创建页面树
         pages = new Pages();
         proxyDialog = new ProxyDialog(stage, pages);
         proxyDialog.loadSettings();
@@ -294,10 +302,12 @@ public class Ensemble2 extends Application {
             }
         });
         // create left split pane
+        // 创建左拆分窗格
         BorderPane leftSplitPane = new BorderPane();
         leftSplitPane.setTop(pageTreeToolBar);
         leftSplitPane.setCenter(pageTree);
         // create page toolbar
+        // 创建页面工具栏
         pageToolBar = new ToolBar();
         pageToolBar.setId("page-toolbar");
         pageToolBar.setMinHeight(29);
@@ -346,6 +356,7 @@ public class Ensemble2 extends Application {
             pageToolBar.getItems().addAll(spacer3, settingsButton);
         }
         // create page area
+        // 创建页面区域
         pageArea = new Pane() {
             @Override
             protected void layoutChildren() {
@@ -356,10 +367,12 @@ public class Ensemble2 extends Application {
         };
         pageArea.setId("page-area");
         // create right split pane
+        // 创建右分割窗格
         BorderPane rightSplitPane = new BorderPane();
         rightSplitPane.setTop(pageToolBar);
         rightSplitPane.setCenter(pageArea);
         // create split pane
+        // 创建拆分窗格
         splitPane = new SplitPane();
         splitPane.setId("page-splitpane");
         splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -370,11 +383,13 @@ public class Ensemble2 extends Application {
         this.root.setTop(toolBar);
         this.root.setCenter(splitPane);
         // add window resize button so its on top
+        // 添加窗口调整大小按钮，使其位于顶部
         if (!isApplet) {
             windowResizeButton.setManaged(false);
             this.root.getChildren().add(windowResizeButton);
         }
         // expand first level of the tree
+        // 展开树的第一层
         for (TreeItem child : pages.getRoot().getChildren()) {
             if (child == pages.getHighlighted() || child == pages.getNew()) {
                 continue;
