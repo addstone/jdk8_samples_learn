@@ -61,6 +61,7 @@ public class ProxyDialog extends VBox {
         setMaxSize(430, USE_PREF_SIZE);
         // block mouse clicks
         setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
             public void handle(MouseEvent t) {
                 t.consume();
             }
@@ -128,6 +129,7 @@ public class ProxyDialog extends VBox {
                 Ensemble2.getEnsemble2().hideModalMessage();
                 // try fetching docs
                 getDocsInBackground(false, new Runnable() {
+                    @Override
                     public void run() {
                         // save settings to file if we were successful getting docs with the settings
                         try {
@@ -157,6 +159,7 @@ public class ProxyDialog extends VBox {
     public void getDocsInBackground(final boolean showProxyDialogOnFail, final Runnable callBackOnSuccess) {
         final FetchDocListTask task = new FetchDocListTask(Ensemble2.getEnsemble2().getDocsUrl());
         task.stateProperty().addListener(new ChangeListener<Worker.State>() {
+            @Override
             public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State newState) {
                 try {
                     Thread.sleep(5); //timing problem
@@ -261,6 +264,7 @@ public class ProxyDialog extends VBox {
             GridPane.setConstraints(portBox, 1, rowIndex);
 
             ChangeListener<String> textListener = new ChangeListener<String>() {
+                @Override
                 public void changed(ObservableValue<? extends String> ov, String t, String t1) {
                     okBtn.setDisable(
                         hostNameBox.getText() == null || hostNameBox.getText().isEmpty()

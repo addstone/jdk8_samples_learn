@@ -153,6 +153,7 @@ public class Ensemble2 extends Application {
         modalDimmer = new StackPane();
         modalDimmer.setId("ModalDimmer");
         modalDimmer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
             public void handle(MouseEvent t) {
                 t.consume();
                 hideModalMessage();
@@ -261,6 +262,7 @@ public class Ensemble2 extends Application {
         final ToggleButton docsButton = new ToggleButton("Document");
         docsButton.setToggleGroup(pageButtonGroup);
         InvalidationListener treeButtonNotifyListener = new InvalidationListener() {
+            @Override
             public void invalidated(Observable ov) {
                 if (allButton.isSelected()) {
                     pageTree.setRoot(pages.getRoot());
@@ -316,6 +318,7 @@ public class Ensemble2 extends Application {
             Button backButton = new Button();
             backButton.setGraphic(new ImageView(new Image(Ensemble2.class.getResourceAsStream("images/back.png"))));
             backButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
                 public void handle(ActionEvent event) {
                     back();
                 }
@@ -324,6 +327,7 @@ public class Ensemble2 extends Application {
             Button forwardButton = new Button();
             forwardButton.setGraphic(new ImageView(new Image(Ensemble2.class.getResourceAsStream("images/forward.png"))));
             forwardButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
                 public void handle(ActionEvent event) {
                     forward();
                 }
@@ -332,6 +336,7 @@ public class Ensemble2 extends Application {
             Button reloadButton = new Button();
             reloadButton.setGraphic(new ImageView(new Image(Ensemble2.class.getResourceAsStream("images/reload.png"))));
             reloadButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
                 public void handle(ActionEvent event) {
                     reload();
                 }
@@ -348,6 +353,7 @@ public class Ensemble2 extends Application {
             settingsButton.setId("SettingsButton");
             settingsButton.setGraphic(new ImageView(new Image(Ensemble2.class.getResourceAsStream("images/settings.png"))));
             settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
                 public void handle(ActionEvent event) {
                     showProxyDialog();
                 }
@@ -436,6 +442,7 @@ public class Ensemble2 extends Application {
             // if new page then navigate to it
             final String path = hashLoc;
             Platform.runLater(new Runnable() {
+                @Override
                 public void run() {
                     if (!path.equals(currentPagePath)) {
                         goToPage(path);
@@ -507,6 +514,7 @@ public class Ensemble2 extends Application {
         TimelineBuilder.create().keyFrames(
             new KeyFrame(Duration.seconds(1),
                 new EventHandler<ActionEvent>() {
+                    @Override
                     public void handle(ActionEvent t) {
                         modalDimmer.setCache(false);
                     }
@@ -523,6 +531,7 @@ public class Ensemble2 extends Application {
         TimelineBuilder.create().keyFrames(
             new KeyFrame(Duration.seconds(1),
                 new EventHandler<ActionEvent>() {
+                    @Override
                     public void handle(ActionEvent t) {
                         modalDimmer.setCache(false);
                         modalDimmer.setVisible(false);

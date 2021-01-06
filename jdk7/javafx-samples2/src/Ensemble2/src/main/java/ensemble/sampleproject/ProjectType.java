@@ -52,6 +52,7 @@ public class ProjectType {
         return importantFiles;
     }
 
+    @Override
     public String toString() {
         return getTypeString();
     }

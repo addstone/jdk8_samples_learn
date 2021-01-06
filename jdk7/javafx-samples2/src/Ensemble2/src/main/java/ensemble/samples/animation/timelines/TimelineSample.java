@@ -89,6 +89,7 @@ public class TimelineSample extends Sample {
         //start/stop/pause/play from start buttons
         Button buttonStart = new Button("Start");
         buttonStart.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent t) {
                 //start timeline
                 timeline.play();
@@ -96,6 +97,7 @@ public class TimelineSample extends Sample {
         });
         Button buttonStop = new Button("Stop");
         buttonStop.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent t) {
                 //stop timeline
                 timeline.stop();
@@ -103,6 +105,7 @@ public class TimelineSample extends Sample {
         });
         Button buttonPlayFromStart = new Button("Play From Start");
         buttonPlayFromStart.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent t) {
                 //play from start
                 timeline.playFromStart();
@@ -110,6 +113,7 @@ public class TimelineSample extends Sample {
         });
         Button buttonPause = new Button("Pause");
         buttonPause.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent t) {
                 //pause from start
                 timeline.pause();
@@ -119,6 +123,7 @@ public class TimelineSample extends Sample {
         final Text currentRateText = new Text("Current time: 0 ms");
         currentRateText.setBoundsType(TextBoundsType.VISUAL);
         timeline.currentTimeProperty().addListener(new InvalidationListener() {
+            @Override
             public void invalidated(Observable ov) {
                 int time = (int) timeline.getCurrentTime().toMillis();
                 currentRateText.setText("Current time: " + time + " ms");
@@ -128,6 +133,7 @@ public class TimelineSample extends Sample {
         final CheckBox checkBoxAutoReverse = new CheckBox("Auto Reverse");
         checkBoxAutoReverse.setSelected(true);
         checkBoxAutoReverse.selectedProperty().addListener(new InvalidationListener() {
+            @Override
             public void invalidated(Observable ov) {
                 timeline.setAutoReverse(checkBoxAutoReverse.isSelected());
             }

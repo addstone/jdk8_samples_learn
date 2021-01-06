@@ -161,6 +161,7 @@ public class SearchBox extends Region {
             searchErrorTooltipHidder.getKeyFrames().add(
                 new KeyFrame(Duration.seconds(3),
                     new EventHandler<ActionEvent>() {
+                        @Override
                         public void handle(ActionEvent t) {
                             searchErrorTooltip.hide();
                             searchErrorTooltip.setText(null);

@@ -57,6 +57,7 @@ public class BreadcrumbBar extends HBox {
                 button.setVisible(true);
                 button.setText(parts[i]);
                 button.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
                     public void handle(ActionEvent event) {
                         Ensemble2.getEnsemble2().goToPage(currentPath);
                     }

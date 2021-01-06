@@ -69,6 +69,7 @@ public class ObservableListSample extends Sample {
         buttonAddNumber.setPrefSize(190, 20);
         buttonAddNumber.setOnAction(new EventHandler<ActionEvent>() {
 
+            @Override
             public void handle(ActionEvent t) {
                 int randomIndex = (int) (round(random() * list.size()));
                 int randomNumber = (int) (round(random() * 10));
@@ -82,6 +83,7 @@ public class ObservableListSample extends Sample {
         Button buttonAdd = new Button("Add list listener");
         buttonAdd.setPrefSize(190, 20);
         final ListChangeListener<Integer> listener = new ListChangeListener<Integer>() {
+            @Override
             public void onChanged(Change<? extends Integer> c) {
                 while (c.next()) {
                     textMessage.setText("replacement on index " + c.getFrom());
@@ -90,6 +92,7 @@ public class ObservableListSample extends Sample {
         };
 
         buttonAdd.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent t) {
                 list.addListener(listener);
                 textMessage.setText("listener added");
@@ -101,6 +104,7 @@ public class ObservableListSample extends Sample {
         buttonRemove.setPrefSize(190, 20);
         buttonRemove.setOnAction(new EventHandler<ActionEvent>() {
 
+            @Override
             public void handle(ActionEvent t) {
                 //remove the listener
                 list.removeListener(listener);
@@ -138,6 +142,7 @@ public class ObservableListSample extends Sample {
         final javafx.animation.Timeline timeline = new javafx.animation.Timeline();
         timeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
         javafx.animation.KeyFrame keyFrame = new javafx.animation.KeyFrame(javafx.util.Duration.millis(150), ":)", new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent t) {
                 int randomPos = (int) (Math.random() * 3.9);
                 int randomNum = (int) (Math.random() * 8.9 + 1);
@@ -153,11 +158,13 @@ public class ObservableListSample extends Sample {
         javafx.scene.shape.Rectangle mouseRect = new javafx.scene.shape.Rectangle(0, 0, 114, 114);
         mouseRect.setFill(Color.TRANSPARENT);
         mouseRect.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
             public void handle(MouseEvent t) {
                 timeline.playFromStart();
             }
         });
         mouseRect.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
             public void handle(MouseEvent t) {
                 timeline.stop();
                 for (int i = 0; i < 4; i++) {

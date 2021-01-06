@@ -35,7 +35,7 @@ public abstract class Page extends TreeItem<String> {
             return getName();
         } else {
             String parentsPath = ((Page) getParent()).getPath();
-            if (parentsPath.equalsIgnoreCase("All")) {
+            if ("All".equalsIgnoreCase(parentsPath)) {
                 return getName();
             } else {
                 return parentsPath + "/" + getName();
@@ -101,6 +101,7 @@ public abstract class Page extends TreeItem<String> {
             this.pagePath = pagePath;
         }
 
+        @Override
         public void handle(Event event) {
             Ensemble2.getEnsemble2().goToPage(pagePath);
         }

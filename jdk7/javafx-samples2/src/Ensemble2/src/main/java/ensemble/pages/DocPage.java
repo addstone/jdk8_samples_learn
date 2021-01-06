@@ -85,6 +85,7 @@ public class DocPage extends Page {
             engine = webView.getEngine();
             // listen to documents and let them know we are ensemble.ensemble
             engine.documentProperty().addListener(new InvalidationListener() {
+                @Override
                 public void invalidated(Observable ov) {
                     // Add our custom css to document
                     Document doc = engine.getDocument();
@@ -173,6 +174,7 @@ public class DocPage extends Page {
                 }
             });
             engine.locationProperty().addListener(new InvalidationListener() {
+                @Override
                 public void invalidated(Observable ov) {
                     String newUrl = engine.getLocation();
                     String path = DocsHelper.getPagePath(newUrl, Ensemble2.getEnsemble2().getDocsUrl());

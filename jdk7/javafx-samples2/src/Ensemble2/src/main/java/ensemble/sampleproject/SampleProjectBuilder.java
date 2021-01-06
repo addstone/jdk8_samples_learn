@@ -169,7 +169,7 @@ public class SampleProjectBuilder {
 //            }
 //        }
         String sep = System.getProperty("file.separator");
-        if (sep.equals("\\")) {
+        if ("\\".equals(sep)) {
             javafxrtPath = javafxrtPath.replaceAll("\\" + sep, "/");
         }
         ///System.out.println("        javafxrtPath = " + javafxrtPath);

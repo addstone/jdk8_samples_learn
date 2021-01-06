@@ -388,6 +388,7 @@ public class SamplePage extends Page {
         tile.getStyleClass().clear();
         tile.getStyleClass().add("sample-tile");
         tile.setOnAction(new EventHandler() {
+            @Override
             public void handle(Event event) {
                 Ensemble2.getEnsemble2().goToPage(SamplePage.this);
             }

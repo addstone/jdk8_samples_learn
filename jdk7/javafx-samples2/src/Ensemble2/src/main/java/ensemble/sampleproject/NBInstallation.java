@@ -117,6 +117,7 @@ public class NBInstallation {
      */
     public File[] getClusterDirs() {
         return installDir.listFiles(new FileFilter() {
+            @Override
             public boolean accept(File f) {
                 if (f.isDirectory()) {
                     for (int i = 0; i < NON_CLUSTER_DIRS.length; i++) {
@@ -149,7 +150,7 @@ public class NBInstallation {
 
     // from 5.5.1beta2 => 5.5.1
     public String numVersion() {
-        if (versionParts != null && !versionParts[0].equals("")) {
+        if (versionParts != null && !"".equals(versionParts[0])) {
             return versionParts[0];
         }
         // fallback to avoid problems when dev version
@@ -159,7 +160,7 @@ public class NBInstallation {
 
     // from 5.5.1beta2 => beta
     public String releaseType() {
-        if (versionParts != null && !versionParts[1].equals("")) {
+        if (versionParts != null && !"".equals(versionParts[1])) {
             return versionParts[1];
         }
         return "";
@@ -167,12 +168,13 @@ public class NBInstallation {
 
     // from 5.5.1beta2 => 2
     public String releaseVersion() {
-        if (versionParts != null && !versionParts[2].equals("")) {
+        if (versionParts != null && !"".equals(versionParts[2])) {
             return versionParts[2];
         }
         return "";
     }
 
+    @Override
     public String toString() {
         return userDir.getAbsolutePath();
     }
@@ -181,6 +183,7 @@ public class NBInstallation {
 
     public static class LastUsedComparator implements Comparator {
 
+        @Override
         public int compare(Object arg0, Object arg1) {
             return signum(((NBInstallation) arg0).lastUsed() -
                 ((NBInstallation) arg1).lastUsed());
@@ -200,15 +203,16 @@ public class NBInstallation {
 
     public static class VersionComparator implements Comparator {
 
+        @Override
         public int compare(Object arg0, Object arg1) {
             int retVal = 0;
             String v0 = ((NBInstallation) arg0).numVersion();
             String v1 = ((NBInstallation) arg1).numVersion();
             // this is because dev version doesn't have any numbers,
             // so 'dev' means lower version always
-            if (v0.equals("")) {
+            if ("".equals(v0)) {
                 retVal = -1;
-            } else if (v1.equals("")) {
+            } else if ("".equals(v1)) {
                 retVal = 1;
             }
             if (retVal == 0) {
@@ -362,17 +366,17 @@ public class NBInstallation {
         int retVal = 0;
         if (relType1.equals(relType2)) {
             retVal = 0;
-        } else if (relType1.equals("")) {
+        } else if ("".equals(relType1)) {
             retVal = 1;
-        } else if (relType2.equals("")) {
+        } else if ("".equals(relType2)) {
             retVal = -1;
-        } else if (relType1.equals("dev") && ((relType2.equals("beta") || relType2.equals("rc")))) {
+        } else if ("dev".equals(relType1) && (("beta".equals(relType2) || "rc".equals(relType2)))) {
             retVal = -1;
-        } else if (relType2.equals("dev") && ((relType1.equals("beta") || relType1.equals("rc")))) {
+        } else if ("dev".equals(relType2) && (("beta".equals(relType1) || "rc".equals(relType1)))) {
             retVal = 1;
-        } else if (relType1.equals("beta") && relType2.equals("rc")) {
+        } else if ("beta".equals(relType1) && "rc".equals(relType2)) {
             retVal = -1;
-        } else if (relType2.equals("beta") && relType1.equals("rc")) {
+        } else if ("beta".equals(relType2) && "rc".equals(relType1)) {
             retVal = 1;
         }
         return retVal;
@@ -414,7 +418,8 @@ public class NBInstallation {
             return null;
         }
         String retVal[] = new String[]{"", "", ""};
-        Pattern p = Pattern.compile("(\\d*(\\.\\d+)*)([a-zA-Z]*)(\\d*)");
+        String getVersionPartsStr = "(\\d*(\\.\\d+)*)([a-zA-Z]*)(\\d*)";
+        Pattern p = Pattern.compile(getVersionPartsStr);
         Matcher m = p.matcher(s);
         if (m.matches()) {
             retVal[0] = m.group(1);

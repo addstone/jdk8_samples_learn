@@ -28,13 +28,13 @@ public class UserDirScanner {
         // find dev NBInstallation
         for (NBInstallation nbi : list) {
             // 1.0 version means no version number exists
-            if (nbi.numVersion().equals("1.0") &&
-                nbi.releaseType().equals("dev") &&
-                nbi.releaseVersion().equals("")) {
+            if ("1.0".equals(nbi.numVersion()) &&
+                "dev".equals(nbi.releaseType()) &&
+                "".equals(nbi.releaseVersion())) {
                 devNbi = nbi;
             }
         }
-        if (minVersion.equals("dev")) {
+        if ("dev".equals(minVersion)) {
             if (devNbi != null) {
                 return new NBInstallation[]{devNbi};
             }
@@ -60,6 +60,7 @@ public class UserDirScanner {
     // returns all valid installations of NB found in ${HOME}/.netbeans
     private static List<NBInstallation> allNBInstallations(File nbUserHome) {
         File files[] = nbUserHome.listFiles(new FileFilter() {
+            @Override
             public boolean accept(File f) {
                 return f.isDirectory();
             }

@@ -26,6 +26,11 @@ import javafx.util.Duration;
  * controls to reduce opacity to zero for some circles to compare with others,
  * or change circle color to distinguish between individual interpolators.
  *
+ * 一个示例，显示时间轴中关键帧之间的各种插值类型。
+ * 有五个圆圈，每个圆圈具有不同的插值方法。线性插值器是默认设置。
+ * 使用控件可将某些圆的不透明度降低为零，以与其他圆进行比较，
+ * 或更改圆的颜色以区分各个插值器。
+ *
  * @see javafx.animation.Interpolator
  * @see javafx.animation.KeyFrame
  * @see javafx.animation.KeyValue
@@ -58,10 +63,14 @@ public class InterpolatorSample extends Sample {
         y2Val = 0.1;
 
         //create circles by method createMovingCircle listed below
-        circle1 = createMovingCircle(Interpolator.LINEAR, Color.RED); //default interpolator
+        // 通过下面列出的方法 createMovingCircle 创建圆
+        //default interpolator
+        // 默认内插器
+        circle1 = createMovingCircle(Interpolator.LINEAR, Color.RED);
         circle1.setOpacity(0.7);
-
-        circle2 = createMovingCircle(Interpolator.EASE_BOTH, Color.VIOLET); //circle slows down when reached both ends of trajectory
+        // circle slows down when reached both ends of trajectory
+        // 当到达轨迹的两端时，圆会减速
+        circle2 = createMovingCircle(Interpolator.EASE_BOTH, Color.VIOLET);
         circle2.setOpacity(0.45);
         circle2.setCenterY(60);
 
@@ -133,6 +142,7 @@ public class InterpolatorSample extends Sample {
         });
 
         // REMOVE ME
+        // 删除我
         setControls(
             new SimplePropertySheet.PropDesc("LINEAR, Opacity", circle1.opacityProperty(), 0d, 1d),
             new SimplePropertySheet.PropDesc("LINEAR, Color", circle1.fillProperty()),
@@ -150,6 +160,7 @@ public class InterpolatorSample extends Sample {
             new SimplePropertySheet.PropDesc("SPLINE, Control y2", y2.valueProperty(), 0d, 1d)
         );
         // END REMOVE ME
+        // 结束删除我
     }
 
 
@@ -157,6 +168,7 @@ public class InterpolatorSample extends Sample {
         Circle circle = new Circle(25, 25, 35, color);
         circle.setOpacity(0.0);
         //add effect
+        // 增加效果
         circle.setEffect(new Lighting());
 
         //create a timeline for moving the circle
@@ -252,12 +264,14 @@ public class InterpolatorSample extends Sample {
         g.setEffect(new Lighting());
 
         g.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
             public void handle(MouseEvent t) {
                 tl.play();
             }
         });
 
         g.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
             public void handle(MouseEvent t) {
                 tl.pause();
             }
