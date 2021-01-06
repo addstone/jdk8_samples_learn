@@ -99,6 +99,7 @@ public class Ensemble2 extends Application {
 
     /**
      * Start the application
+     * 启动应用程序
      *
      * @param stage The main application stage
      */
@@ -406,6 +407,7 @@ public class Ensemble2 extends Application {
             }
         }
         // goto initial page
+        // 转到初始页
         if (isApplet) {
             String hashLoc = getBrowserHashLocation();
             if (hashLoc != null) {
@@ -416,9 +418,11 @@ public class Ensemble2 extends Application {
             }
         } else {
             // default to all samples
+            // 默认为所有样本
             goToPage(pages.getSamples());
         }
         // show stage
+        // 表演舞台
         stage.setScene(scene);
         stage.show();
         //获取结束时间
@@ -428,6 +432,7 @@ public class Ensemble2 extends Application {
 
     /**
      * Called from JavaScript in the browser when the page hash location changes
+     * 页面哈希位置更改时在浏览器中从JavaScript调用
      *
      * @param hashLoc The new has location, e.g. #SAMPLES
      */
