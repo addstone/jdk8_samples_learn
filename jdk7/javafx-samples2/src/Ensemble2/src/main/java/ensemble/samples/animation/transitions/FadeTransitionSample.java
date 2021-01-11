@@ -14,6 +14,7 @@ import javafx.util.Duration;
 /**
  * Description:
  * A sample in which the opacity of a node changes over a given time.
+ * 一个示例，其中节点的不透明度在给定时间内改变。
  *
  * @related animation/transitions/FillTransition
  * @related animation/transitions/ParallelTransition

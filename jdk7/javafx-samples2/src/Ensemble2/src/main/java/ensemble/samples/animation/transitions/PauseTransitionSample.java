@@ -17,6 +17,7 @@ import javafx.util.Duration;
 /**
  * Description:
  * A sample in which a node pauses over a given time.
+ * 节点在给定时间内暂停的样本。
  *
  * @related animation/transitions/FadeTransition
  * @related animation/transitions/FillTransition
